@@ -25,6 +25,26 @@ if [ \! -f $BUILDDIR/lib/jsoncpp/lib/libjson.a ]; then
   cd ../../..
 fi
 
+# Compile protobuf
+PROTOBUF_BUILD_DIR=$BUILDDIR/lib/protobuf/build
+PROTOBUF_INSTALL_DIR=$BUILDDIR/lib/protobuf/install
+if [ \! -f $BUILDDIR/lib/protobuf/install/lib/libprotobuf.a ]; then
+  echo Building protobuf...
+  rm -rf $PROTOBUF_BUILD_DIR
+  mkdir -p $PROTOBUF_BUILD_DIR
+  mkdir -p $PROTOBUF_INSTALL_DIR
+  PROTOBUF_BUILD_DIR=$(realpath $PROTOBUF_BUILD_DIR)
+  PROTOBUF_INSTALL_DIR=$(realpath $PROTOBUF_INSTALL_DIR)
+  cd vendor/protobuf
+  git archive HEAD | tar -x -C $PROTOBUF_BUILD_DIR
+  cd $PROTOBUF_BUILD_DIR
+  ./autogen.sh
+  ./configure --prefix=$PROTOBUF_INSTALL_DIR
+  make $JOBS
+  make install
+  cd ../../../..
+fi
+
 mkdir -p $BUILDDIR && cd $BUILDDIR
 cmake -DCMAKE_BUILD_TYPE=$BUILDTYPE $PLATFORM_FILE ..
 make $JOBS
