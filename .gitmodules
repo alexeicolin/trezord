@@ -7,3 +7,6 @@
 [submodule "vendor/macdylibbundler"]
 	path = vendor/macdylibbundler
 	url = https://github.com/jpochyla/macdylibbundler.git
+[submodule "vendor/protobuf"]
+	path = vendor/protobuf
+	url = https://github.com/google/protobuf
